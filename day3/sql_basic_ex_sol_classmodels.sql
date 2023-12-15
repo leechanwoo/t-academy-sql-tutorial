@@ -149,7 +149,7 @@ FROM (
         country, sales, DENSE_RANK() OVER(ORDER BY sales DESC) AS RNK
     FROM (
         SELECT 
-            C.country, sum(priceeach*quantityordered) AS sales
+            C.country, SUM(priceeach*quantityordered) AS sales
         FROM 
             orders AS O
         LEFT JOIN 
@@ -219,7 +219,7 @@ WHERE C.country = 'Austria';
 
 # Best Seller. 미국시장에서 역대 누적 판매액이 가장 높은 모델 Top5를 구하라.
 WITH product_sales AS (
-    select P.productname, sum(quantityordered*priceeach) as sales
+    SELECT P.productname, sum(quantityordered*priceeach) AS sales
     FROM orders AS O
     LEFT JOIN customers AS C
     ON O.customernumber = C.customernumber
