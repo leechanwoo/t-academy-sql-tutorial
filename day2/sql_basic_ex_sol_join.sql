@@ -138,3 +138,13 @@ UNION ALL
 SELECT distinct name
 FROM Orders as O, Customer as C
 WHERE O.custid = C.custid
+
+
+
+
+
+
+
+
+
+

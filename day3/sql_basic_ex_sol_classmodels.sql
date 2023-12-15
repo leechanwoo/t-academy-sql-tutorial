@@ -149,7 +149,7 @@ FROM (
         country, sales, DENSE_RANK() OVER(ORDER BY sales DESC) AS RNK
     FROM (
         SELECT 
-            C.country, SUM(priceeach*quantityordered) AS sales
+            C.country, sum(priceeach*quantityordered) AS sales
         FROM 
             orders AS O
         LEFT JOIN 
@@ -219,21 +219,21 @@ WHERE C.country = 'Austria';
 
 # Best Seller. 미국시장에서 역대 누적 판매액이 가장 높은 모델 Top5를 구하라.
 WITH product_sales AS (
-    SELECT P.productname, sum(quantityordered*priceeach) AS sales
-    FROM orders AS O
-    LEFT JOIN customers AS C
-    ON O.customernumber = C.customernumber
-    LEFT JOIN orderdetails AS OD
-    ON O.ordernumber = OD.ordernumber
-    LEFT JOIN products AS P
-    ON OD.productcode = P.productCode
+    select P.productname, sum(quantityordered*priceeach) as sales
+    from orders as O
+    left join customers as C
+    on O.customernumber = C.customernumber
+    left join orderdetails as OD
+    on O.ordernumber = OD.ordernumber
+    left join products as P
+    on OD.productcode = P.productCode
     WHERE C.country = 'USA'
-    GROUP BY 1)
-SELECT *
-FROM (
-    SELECT *, ROW_NUMBER() OVER(ORDER BY sales DESC) AS rnk
-    FROM product_sales) AS AA
-WHERE rnk <= 5;
+    group by 1)
+select *
+from (
+    select *, row_number() over(order by sales desc) AS rnk
+    from product_sales) as AA
+where rnk <= 5;
 
 # Churn Rate
 ## Churn과 Non-Churn의 수를 구하라.
